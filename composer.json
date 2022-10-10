@@ -1,0 +1,8 @@
+{
+    "config": {
+      "platform": {
+        "php": "MAJOR.MINOR.PATCH",
+        "ext-something": "1"
+      }
+    }
+  }
