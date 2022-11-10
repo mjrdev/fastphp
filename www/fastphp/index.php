@@ -7,13 +7,38 @@ class FastPHP {
   }
 
   public function getPath() {
-    $rota = $_SERVER['REDIRECT_URL'];
+    return $rota = $_SERVER['REDIRECT_URL'];
   }
 
-  public function listen() {
+  public function listen($callback) {
 
     $path = $this->getPath();
     $route = $this->router->search_route($path);
-    call_user_func($route->exec);
+
+    if($route) {
+
+      $middleware = null;
+
+      if($route->middleware) {
+        $middleware = call_user_func($route->middleware);
+
+        if($middleware === false ) {
+          return 'Unauthorized Middleware';
+        }
+      }
+      
+      try {
+
+        call_user_func($route->exec, $middleware);
+
+      } catch(Exception $err) {
+
+        return 'ocorreu um erro';
+      }
+    }
+    
+    else {
+      return $callback();
+    }
   }
 }

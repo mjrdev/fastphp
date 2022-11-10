@@ -2,10 +2,11 @@
 
 require_once './fastphp/index.php';
 require_once './config.php';
-require_once './config.php';
 
 $app = new FastPHP();
 
 require './app/routes.php';
 
-$app->listen();
+$app->listen(function() {
+  echo 'Not found 404';
+});
