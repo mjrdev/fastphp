@@ -25,21 +25,58 @@ class Router {
     $this->base_url = $base_url;
   }
 
-
+  // methods routes
 
   public function get($path, $middleware, $callback) {
 
-    $route = new Route('get', $path, $middleware, $callback);
+    $route = new Route('GET', $path, $middleware, $callback);
 
     array_push($this->routes, $route);
   }
 
-  public function search_route(string $path = null) {
+  public function post($path, $middleware, $callback) {
 
-    if($path) {
-      return $this->routes;
+    $route = new Route('POST', $path, $middleware, $callback);
+
+    array_push($this->routes, $route);
+  }
+
+  public function put($path, $middleware, $callback) {
+
+    $route = new Route('PUT', $path, $middleware, $callback);
+
+    array_push($this->routes, $route);
+  }
+
+  public function delete($path, $middleware, $callback) {
+
+    $route = new Route("DELETE", $path, $middleware, $callback);
+
+    array_push($this->routes, $route);
+  }
+
+  // other methods for config routes
+
+  public function search_route(string $path, ) {
+
+    $paths = [];
+    foreach ($this->routes as $key => $value) {
+      array_push($paths, $value->path);
+    }
+
+    $has_path = array_search($path, $paths);
+    
+    if($has_path)
+
+    if($has_path === false) {
+
+      return false;
+    } elseif($this->routes[$has_path]->type !== $_SERVER['REQUEST_METHOD']) {
+
+      return false;
     } else {
-      return $this->routes[0];
+
+      return $this->routes[$has_path];
     }
   }
 
