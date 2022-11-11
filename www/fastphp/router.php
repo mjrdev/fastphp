@@ -15,7 +15,7 @@ class Route {
 }
 
 class Router {
-  public $routes;
+  private $routes;
 
   public function __construct(
     public string $base_url = '/'
@@ -57,30 +57,29 @@ class Router {
 
   // other methods for config routes
 
-  public function search_route(string $path, ) {
+  public function search_route(string $path, string $method) {
 
     $paths = [];
     foreach ($this->routes as $key => $value) {
       array_push($paths, $value->path);
     }
 
-    $has_path = array_search($path, $paths);
-    
-    if($has_path)
-
-    if($has_path === false) {
-
-      return false;
-    } elseif($this->routes[$has_path]->type !== $_SERVER['REQUEST_METHOD']) {
-
-      return false;
-    } else {
-
-      return $this->routes[$has_path];
-    }
+    return $has_path = $this->search_path($path, $method);
   }
 
-  public function get_routes() {
+  private function search_path(string $path, string $method) {
+    $routes = $this->get_routes();
+    $resul = null;
+    foreach($routes as $key => $route) {
+      if($route->path === $path && $route->type === $method) {
+        $resul = $route;
+      }
+    }
+
+    return $resul;
+  }
+
+  public function get_routes() : array {
     return $this->routes;
   }
 }

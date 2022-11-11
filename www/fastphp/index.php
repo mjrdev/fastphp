@@ -13,7 +13,7 @@ class FastPHP {
   public function listen($callback) {
 
     $path = $this->getPath();
-    $route = $this->router->search_route($path);
+    $route = $this->router->search_route($path, $_SERVER['REQUEST_METHOD']);
 
     if($route) {
 
